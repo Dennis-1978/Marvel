@@ -7,6 +7,9 @@ import Spinner from '../spinner/spinner';
 import './charList.scss';
 
 class CharList extends Component {
+	constructor(props) {
+		super(props);
+	}
 
 	state = {
 		charList: [],
@@ -47,7 +50,8 @@ class CharList extends Component {
 			return (
 				<li 
 					className="char__item"
-					key={item.id}>
+					key={item.id}
+					onClick={() => this.props.onCharSelected(item.id)}>
 					<img style={imgStyle} src={item.thumbnail} alt={item.name}/>
 					<div className="char__name">{item.name}</div>
 				</li>

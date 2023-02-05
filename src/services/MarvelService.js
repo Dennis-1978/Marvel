@@ -37,7 +37,9 @@ class MarvelService {
                 : char.description.substr(0, 100).concat('...'),
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
-            wiki: char.urls[1].url
+            wiki: char.urls[1].url,
+            // this is array with data
+            comicsList: char.comics.items
         };
     }
 }
