@@ -7,9 +7,6 @@ import Spinner from '../spinner/spinner';
 import './charList.scss';
 
 class CharList extends Component {
-	constructor(props) {
-		super(props);
-	}
 
 	state = {
 		charList: [],

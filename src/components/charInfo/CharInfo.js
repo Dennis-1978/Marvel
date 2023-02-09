@@ -72,6 +72,7 @@ class CharInfo extends Component {
 		const skeleton = !(char || loading || error) ? <Skeleton /> : null;
 		const spinner = loading ? <Spinner /> : null;
 		const errorMessage = error ? <ErrorMessage /> : null;
+
 		// if there is no load, no error, but there is a character
 		const content = !(loading || error || !char) ? <View char={char} /> : null;
 
