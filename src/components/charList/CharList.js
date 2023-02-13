@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -12,8 +13,8 @@ class CharList extends Component {
 		charList: [],
 		loading: true,
 		error: false,
-		newItemLoading: false,
-		offset: 1550,
+		newItemLoading: false,  // state for the load more button
+		offset: 210,
 		charEnded: false
 	};
 
@@ -62,17 +63,40 @@ class CharList extends Component {
 		});
 	};
 
+	// use of refs
+	itemRefs = [];
+
+	setRef = (ref) => {
+		this.itemRefs.push(ref);
+	};
+
+	focusOnItem = (id) => {
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+        this.itemRefs[id].focus();
+    }
+
 	renderItems(arr) {
-		const items = arr.map(item => {
+		const items = arr.map((item, index) => {
 			const imgStyle = item.thumbnail.includes('image_not_available') 
 				? {objectFit: 'contain'} 
 				: {objectFit: 'cover'};
-
 			return (
 				<li 
 					className="char__item"
+					tabIndex={0}
+					ref={this.setRef}
 					key={item.id}
-					onClick={() => this.props.onCharSelected(item.id)}>
+					onClick={() => {
+                        this.props.onCharSelected(item.id);
+                        this.focusOnItem(index);
+                    }}
+					onKeyDown={(event) => {
+                        if (event.key === ' ' || event.key === "Enter") {
+                            this.props.onCharSelected(item.id);
+                            this.focusOnItem(index);
+                        }
+                    }}>
 					<img style={imgStyle} src={item.thumbnail} alt={item.name}/>
 					<div className="char__name">{item.name}</div>
 				</li>
@@ -111,5 +135,9 @@ class CharList extends Component {
         );
     }
 }
+
+CharList.propTypes = {
+	onCharSelected: PropTypes.func.isRequired
+};
 
 export default CharList;
