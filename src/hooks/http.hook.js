@@ -7,7 +7,8 @@ export const useHttp = () => {
     const request = useCallback(async (url, 
                                        method = 'GET', 
                                        body = null, 
-                                       headers = {'Content-Type': 'application/json'}) => {
+                                       headers = {'Content-Type': 'application/json'}
+                                       ) => {
 
         setLoading(true);
 
@@ -19,10 +20,9 @@ export const useHttp = () => {
             }
 
             const data = await response.json();
+
             setLoading(false);
-
             return data;
-
         } catch(e) {
             setLoading(false);
             setError(e.message);

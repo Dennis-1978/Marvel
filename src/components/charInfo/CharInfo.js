@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/spinner';
+import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 
@@ -52,13 +52,13 @@ const CharInfo = (props) => {
 }
 
 const View = ({char}) => {
-	const {name, thumbnail, description, homepage, wiki, comicsList} = char;
+	const {name, thumbnail, description, homepage, wiki, comics} = char;
 
 	const imgStyle = thumbnail.includes('image_not_available') 
 		? {objectFit: 'contain'} 
 		: {objectFit: 'cover'};
 
-	const content = comicsList.map((item, i) => {
+	const content = comics.map((item, i) => {
 		if (i > 9) {
 			return;
 		}
@@ -70,7 +70,7 @@ const View = ({char}) => {
 	});
 	
 	const getEmptyComicsList = () => {
-		if (!comicsList.length) {
+		if (!comics.length) {
 			return (
 				<li style={
 						{

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import Spinner from '../spinner/spinner';
+import Spinner from '../spinner/Spinner';
 
 import './comicsList.scss';
 
@@ -74,7 +74,7 @@ const ComicsList = () => {
             {errorMessage}
             {spinner}
             {items}
-            <button 
+            <button
                 className="button button__main button__long"
                 disabled={newItemLoading}
                 style={{'display' : comicsEnded ? 'none' : 'block'}}
