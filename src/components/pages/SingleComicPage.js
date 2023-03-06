@@ -24,7 +24,7 @@ const SingleComicPage = () => {
 			.then(onComicLoaded)
 	};
 
-	// updates the local state with character data
+	// updates the local state with comic data
 	const onComicLoaded = (comic) => {
 		setComic(comic);
 	};
