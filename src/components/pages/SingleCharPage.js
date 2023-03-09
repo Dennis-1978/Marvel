@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 import AppBanner from '../appBanner/AppBanner';
 
 import './singleCharPage.scss';
@@ -13,7 +12,7 @@ const SingleCharPage = () => {
     const {charId} = useParams();
     const [char, setChar] = useState(null);
 
-    const { loading, error, getCharacter, clearError } = useMarvelService();
+    const { getCharacter, clearError, process, setProcess } = useMarvelService();
 
     useEffect(() => {
 		updateChar();
@@ -23,7 +22,8 @@ const SingleCharPage = () => {
 		clearError();
 
 		getCharacter(charId)
-			.then(onCharLoaded);
+			.then(onCharLoaded)
+            .then(() => setProcess('confirmed'));
 	};
 
 	// updates the local state with character data
@@ -31,24 +31,16 @@ const SingleCharPage = () => {
 		setChar(char);
 	};
 
-    const spinner = loading ? <Spinner /> : null;
-	const errorMessage = error ? <ErrorMessage /> : null;
-
-	// if there is no load, no error, but there is a character
-	const content = !(loading || error || !char) ? <View char={char} /> : null;
-
     return (
         <>
             <AppBanner />
-            {spinner}
-            {errorMessage}
-            {content}
+            {setContent(process, View, char)}
         </>
     )
 }
 
-const View = ({char}) => {
-    const {thumbnail, description, name} = char;
+const View = ({data}) => {
+    const {thumbnail, description, name} = data;
 
     return (
         <div className="single-comic">

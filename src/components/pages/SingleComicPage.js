@@ -3,8 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 import AppBanner from '../appBanner/AppBanner'; 
 
 import './singleComicPage.scss';
@@ -14,7 +13,7 @@ const SingleComicPage = () => {
     const {comicId} = useParams();
     const [comic, setComic] = useState(null);
 
-    const { loading, error, getComic, clearError } = useMarvelService();
+    const { getComic, clearError, process, setProcess } = useMarvelService();
 
     useEffect(() => {
 		updateComic();
@@ -24,6 +23,7 @@ const SingleComicPage = () => {
 		clearError();
 		getComic(comicId)
 			.then(onComicLoaded)
+            .then(() => setProcess('confirmed'));
 	};
 
 	// updates the local state with comic data
@@ -31,23 +31,15 @@ const SingleComicPage = () => {
 		setComic(comic);
 	};
 
-    const spinner = loading ? <Spinner /> : null;
-	const errorMessage = error ? <ErrorMessage /> : null;
-
-	// if there is no load, no error, but there is a comic
-	const content = !(loading || error || !comic) ? <View comic={comic} /> : null;
-
     return (
         <>
-            {spinner}
-            {errorMessage}
-            {content}
+            {setContent(process, View, comic)}
         </>
     )
 }
 
-const View = ({comic}) => {
-    const {thumbnail, title, description, pageCount, language, price} = comic;
+const View = ({data}) => {
+    const {thumbnail, title, description, pageCount, language, price} = data;
     
     return (
         <>
